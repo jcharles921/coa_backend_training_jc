@@ -6,34 +6,31 @@ CLASS z_discount_legibility DEFINITION
 
   PUBLIC SECTION.
     INTERFACES if_oo_adt_classrun .
-    DATA: purchase            TYPE f,discount_percentage TYPE f,
-          final_amount        TYPE f.
-
-
 
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
 
-
-
 CLASS z_discount_legibility IMPLEMENTATION.
   METHOD if_oo_adt_classrun~main.
+
+    DATA: lv_purchase            TYPE decfloat34,lv_discount_percentage  TYPE p LENGTH 8 DECIMALS 2,
+          lv_final_amount        TYPE p LENGTH 8 DECIMALS 2.
     "purchase = 350.
-    purchase = 600.
+    lv_purchase = '600.55'.
     "purchase = 100.
-    IF purchase >= 500 .
-      discount_percentage = 10.
-    ELSEIF purchase >= 200 AND purchase < 500.
-      discount_percentage = 5.
+    IF lv_purchase >= 500 .
+      lv_discount_percentage = 10.
+    ELSEIF lv_purchase >= 200 AND lv_purchase < 500.
+      lv_discount_percentage = 5.
     ELSE.
-      discount_percentage = 0.
+      lv_discount_percentage = 0.
     ENDIF.
-* Applied percentage
-   final_amount = purchase - ( purchase * discount_percentage / 100 ).
-   out->write( |Purchase Amount: { purchase }| ).
-    out->write( |Discount Percentage: { discount_percentage }| ).
-    out->write( |Final Amount: { final_amount }| ).
+
+    lv_final_amount = lv_purchase - ( lv_purchase * lv_discount_percentage / 100 ).
+    out->write( |Purchase Amount: { lv_purchase }| ).
+    out->write( |Discount Percentage: { lv_discount_percentage }| ).
+    out->write( |Final Amount: { lv_final_amount }| ).
 
   ENDMETHOD.
 
