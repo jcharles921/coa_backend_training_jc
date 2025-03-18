@@ -3,9 +3,9 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>Z_DATA_TYPES</CLSNAME>
+    <CLSNAME>Z_DISCOUNT_LEGIBILITY</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Learning abour datatypes</DESCRIPT>
+    <DESCRIPT>Check if customer is eligible for a discount</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
