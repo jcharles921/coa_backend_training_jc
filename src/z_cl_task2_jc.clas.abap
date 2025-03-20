@@ -12,10 +12,10 @@ CLASS z_cl_task2_jc IMPLEMENTATION.
   METHOD if_oo_adt_classrun~main.
 
     "(3) Internal table for employees
-    DATA: lt_employees TYPE TABLE OF zemployee_jc, ls_employee TYPE zemployee_jc.
+    DATA: ls_employee TYPE zemployee_jc.
 
     "Populate table with inline VALUE declarations
-    lt_employees = VALUE #(
+    Data(lt_employees) = VALUE z_tt_employees_jc(
       ( emp_id = 'E001' emp_name = 'Jean Charles'  emp_age = '24' emp_pos = 'Trainee' )
       ( emp_id = 'E002' emp_name = 'Ishimwe Kevine' emp_age = '27' emp_pos = 'Software Engineer' )
       ( emp_id = 'E003' emp_name = 'Alice Johnson'  emp_age = '35' emp_pos = 'Manager' )
