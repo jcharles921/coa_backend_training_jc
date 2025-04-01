@@ -6,12 +6,16 @@
 CLASS lcl_method_helpers DEFINITION FINAL CREATE PUBLIC.
   PUBLIC SECTION.
     TYPES tt_numbers_array TYPE TABLE OF i.
+*    TYPES: BEGIN OF ls_personal_info ,
+*             iv_first_name    TYPE string,
+*             iv_last_name     TYPE string,
+*             iv_year_of_birth TYPE i,
+*           END OF ls_personal_info.
+
     METHODS get_age_and_name
-      IMPORTING
-                iv_first_name       TYPE string
-                iv_last_name        TYPE string
-                iv_year_of_birth    TYPE i
+      IMPORTING iv_personal_info    TYPE zpersonnal_info_jc
       RETURNING VALUE(rv_full_name) TYPE string.
+
     METHODS get_all_even_numbers
       IMPORTING
         it_number               TYPE i
@@ -20,20 +24,17 @@ CLASS lcl_method_helpers DEFINITION FINAL CREATE PUBLIC.
 
     METHODS get_sum_of_digits
       IMPORTING iv_str        TYPE string
-      RETURNING VALUE(rv_sum) TYPE i
-      RAISING   cx_sy_conversion_no_number.
+      RETURNING VALUE(rv_sum) TYPE i .
 
     METHODS get_biggest_number
       IMPORTING it_numbers               TYPE  tt_numbers_array
-      RETURNING VALUE(rv_biggest_number) TYPE  i .
+      RETURNING VALUE(rv_biggest_number) TYPE  i
+      RAISING   cx_sy_itab_line_not_found.
+
     METHODS combine_two_strings
       IMPORTING iv_first_string           TYPE string
                 iv_second_string          TYPE string
       RETURNING VALUE(rv_combined_string) TYPE string.
-
-
-
-
 
 
 ENDCLASS.
@@ -42,9 +43,10 @@ CLASS lcl_method_helpers IMPLEMENTATION.
   " Question 1
   METHOD get_age_and_name.
     DATA lv_full_name TYPE string.
-    lv_full_name = |{ iv_first_name } { iv_last_name }|.
-    DATA(lv_current_year) = sy-datum+0(4).
-    rv_full_name = |{ lv_full_name }, { lv_current_year - iv_year_of_birth } years old |.
+    lv_full_name = |{ iv_personal_info-first_name } { iv_personal_info-last_name }|.
+    DATA(lv_current_time) = cl_abap_context_info=>get_system_date( ).
+    DATA(lv_current_year) = lv_current_time+0(4).
+    rv_full_name = |{ lv_full_name }, { lv_current_year - iv_personal_info-date_of_birth } years old |.
   ENDMETHOD.
   """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   " Question 2
@@ -72,16 +74,10 @@ CLASS lcl_method_helpers IMPLEMENTATION.
     DO strlen( iv_str ) TIMES.
       lv_char = iv_str+lv_index(1). " Extract one character at a time"
 
-      " Try converting the character to an integer"
-      TRY.
-          lv_digit = lv_char.
-          " Add digit to the sum"
-          rv_sum = rv_sum + lv_digit.
-        CATCH cx_sy_conversion_error.
-
-          RAISE EXCEPTION TYPE cx_sy_conversion_no_number.
-
-      ENDTRY.
+      " Try converting the character to an integer
+      lv_digit = lv_char.
+      " Add digit to the sum"
+      rv_sum = rv_sum + lv_digit.
       " Move to the next character"
       lv_index = lv_index + 1.
     ENDDO.
@@ -100,8 +96,7 @@ CLASS lcl_method_helpers IMPLEMENTATION.
           lv_current_biggest = current_number  .
         ENDIF.
       ENDLOOP.
-    ELSE.
-      RAISE EXCEPTION TYPE cx_sy_itab_line_not_found.
+
     ENDIF.
     rv_biggest_number = lv_current_biggest .
   ENDMETHOD.

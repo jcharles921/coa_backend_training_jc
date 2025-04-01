@@ -18,15 +18,17 @@ CLASS z_string_manipulation_jc IMPLEMENTATION.
     DATA(lo_helper) = NEW lcl_method_helpers(  ).
 
 
+
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     "Question 1
     DATA(lv_user_name_age) = lo_helper->get_age_and_name(
                                                           EXPORTING
-                                                              iv_first_name = 'Alice'
-                                                              iv_last_name = 'Forger'
-                                                              iv_year_of_birth = 1997
+                                                             iv_personal_info = VALUE zpersonnal_info_jc(
+                                                                                                 first_name    = 'Alice'
+                                                                                                 last_name     = 'Forger'
+                                                                                                 date_of_birth = 1997 )
                                                          ).
-    out->write( |Question 1 \r\n { lv_user_name_age }| ).
+    out->write( |Question 1 \r{ lv_user_name_age }| ).
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     "Question 2
 
@@ -41,24 +43,23 @@ CLASS z_string_manipulation_jc IMPLEMENTATION.
     "Question 3
     out->write( |Question 3  | ).
     TRY.
-        DATA(lv_sum_digits) = lo_helper->get_sum_of_digits( '54347' ).
+        DATA(lv_sum_digits) = lo_helper->get_sum_of_digits( '1234567111' ).
         out->write( |Sum of digits = { lv_sum_digits }| ).
-      CATCH cx_sy_conversion_error.
-        out->write( | invalid input ! | ) .
+      CATCH cx_sy_conversion_error INTO DATA(lcx_conversion_error).
+        out->write( | invalid input ! { lcx_conversion_error->get_text( ) } | ) .
     ENDTRY.
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     "Question 4
     DATA lt_list_numbers TYPE tt_numbers_array.
 
-    APPEND 23 TO lt_list_numbers.
-    APPEND 30 TO lt_list_numbers.
-    APPEND 3 TO lt_list_numbers.
-    APPEND 23 TO lt_list_numbers.
+    lt_list_numbers = VALUE #( ( 12 ) ( 23 ) ( 45 ) ( 22 ) ).
 
     DATA(lv_biggest_number) = lo_helper->get_biggest_number( EXPORTING it_numbers = lt_list_numbers ).
 
     out->write( |Question 4  | ).
     out->write( lv_biggest_number ) .
+
+
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " Question 5: Combine Two Strings
     DATA(lv_combined_string) = lo_helper->combine_two_strings(
