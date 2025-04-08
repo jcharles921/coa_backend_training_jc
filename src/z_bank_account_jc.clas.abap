@@ -3,72 +3,82 @@ PUBLIC
 FINAL
 CREATE PUBLIC.
   PUBLIC SECTION.
-    INTERFACES if_oo_adt_classrun.
+    METHODS:
+      constructor IMPORTING is_user_info TYPE zuser_info_jc,
+
+      deposit IMPORTING iv_amount TYPE decfloat34,
+
+      withdraw IMPORTING iv_amount         TYPE decfloat34,
+
+
+      get_balance_status RETURNING VALUE(rv_status) TYPE string.
+
+    CLASS-METHODS:
+      get_total_accounts RETURNING VALUE(rv_total) TYPE i,
+
+      get_total_balance RETURNING VALUE(rv_total) TYPE decfloat34.
+
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+    DATA: user_id    TYPE i,
+          first_name TYPE string,
+          last_name  TYPE string,
+          balance    TYPE decfloat34.
+    CLASS-DATA:
+      sv_total_accounts TYPE i,
+      sv_total_balance  TYPE decfloat34.
+
+    CLASS-METHODS validate_amount IMPORTING iv_amount       TYPE decfloat34
+                                  RETURNING VALUE(rv_valid) TYPE abap_bool.
 ENDCLASS.
 
 CLASS z_bank_account_jc IMPLEMENTATION.
-  METHOD if_oo_adt_classrun~main.
+  METHOD constructor.
+    user_id = is_user_info-user_id.
+    first_name = is_user_info-first_name.
+    last_name = is_user_info-last_name.
+    balance = 0.
+    sv_total_accounts = sv_total_accounts + 1.
+  ENDMETHOD.
 
-    DATA: ls_account1_info TYPE zuser_info_jc,
-          ls_account2_info TYPE zuser_info_jc.
+  METHOD deposit.
+    IF validate_amount( iv_amount ) = abap_true.
+      balance = balance + iv_amount.
+      sv_total_balance = sv_total_balance + iv_amount.
+    ENDIF.
+  ENDMETHOD.
 
+  METHOD withdraw.
+    IF validate_amount( iv_amount ) = abap_false.
+      RAISE EXCEPTION TYPE cx_sy_arithmetic_overflow
+        EXPORTING
+          textid = 'Z_BANK_ACCOUNT_JC'.
+    ENDIF.
 
-    DATA(ls_account_1) = VALUE zuser_info_jc(
-                                            user_id = 1
-                                            first_name = 'John'
-                                            last_name = 'Doe'
-                                            balance = 0
-                                            ).
+    IF balance < iv_amount.
+      RAISE EXCEPTION TYPE cx_sy_arithmetic_overflow
+        EXPORTING
+          textid = 'Z_BANK_ACCOUNT_JC'.
+    ENDIF.
 
-    DATA(ls_account_2) = VALUE zuser_info_jc(
-                                            user_id = 2
-                                            first_name = 'Alice'
-                                            last_name = 'Smith'
-                                            balance = 0
-                                            ).
+    balance = balance - iv_amount.
+    sv_total_balance = sv_total_balance - iv_amount.
+  ENDMETHOD.
 
-    " Create accounts using the constructor method
-    DATA(lr_account1) = lcl_method_helpers=>create_account(
-    is_user_info = ls_account1_info
-    ).
+  METHOD get_total_accounts.
+    rv_total = sv_total_accounts.
+  ENDMETHOD.
 
-    DATA(lr_account2) = lcl_method_helpers=>create_account(
-    is_user_info = ls_account2_info
-    ).
+  METHOD get_total_balance.
+    rv_total = sv_total_balance.
+  ENDMETHOD.
 
+  METHOD validate_amount.
+    rv_valid = COND #( WHEN iv_amount > 0 THEN abap_true ELSE abap_false ).
+  ENDMETHOD.
 
-    lcl_method_helpers=>deposit(
-                                EXPORTING
-                                io_account = lr_account1
-                                iv_amount = 100
-                                ).
-
-    lcl_method_helpers=>deposit(
-                                EXPORTING
-                                io_account = lr_account2
-                                iv_amount = 200
-                                ).
-
-    DATA(lv_withdraw_success) = lcl_method_helpers=>withdraw(
-                                                            EXPORTING
-                                                                io_account = lr_account1
-                                                                iv_amount = 50
-                                                            ).
-
-
-    out->write( |Account 1: { lcl_method_helpers=>get_balance_status( lr_account1 ) }| ).
-    out->write( |\n| ).
-
-    out->write( |Account 2: { lcl_method_helpers=>get_balance_status( lr_account2 ) }| ).
-    out->write( |\n| ).
-
-    out->write( |Total accounts: { lcl_method_helpers=>get_total_accounts( ) }| ).
-    out->write( |\n| ).
-
-    out->write( |Total balance: { lcl_method_helpers=>get_total_balance( ) DECIMALS = 2 }| ).
-    out->write( |\n| ).
-
-    out->write( |Withdrawal successful: { COND #( WHEN lv_withdraw_success = abap_true THEN 'Yes' ELSE 'No' ) }| ).
+  METHOD get_balance_status.
+    rv_status = |Your balance is: { balance DECIMALS = 2 } $|.
   ENDMETHOD.
 ENDCLASS.
 
