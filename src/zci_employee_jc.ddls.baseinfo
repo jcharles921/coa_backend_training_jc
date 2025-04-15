@@ -7,7 +7,9 @@
 "ZEMPLOYEE_JC"
 ],
 "ASSOCIATED":
-[],
+[
+"ZDEPARTMENT_JC"
+],
 "BASE":
 [],
 "ANNO_REF":

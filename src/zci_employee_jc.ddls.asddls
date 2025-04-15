@@ -5,16 +5,29 @@
 @EndUserText.label: 'Composite View for employees'
 @Metadata.ignorePropagatedAnnotations: true
 @VDM.viewType: #COMPOSITE
-define view ZCI_EMPLOYEE_JC as select from zemployee_jc as emp
-left outer join zdepartment_jc as dep
-    on emp.departmentid = dep.departmentid
+define view ZCI_EMPLOYEE_JC as select from zemployee_jc
+  association [0..1] to zdepartment_jc as _Department on $projection.departmentid = _Department.departmentid
 {
-    emp.employeeid,
-    emp.firstname,
-    emp.lastname,
-    emp.departmentid,
-    dep.departmentname,
-    emp.salary,
-    emp.salary * 12 as AnnualSalary,
-    emp.cuky_field as Currency
+
+  key zemployee_jc.employeeid,
+  
+  zemployee_jc.firstname,
+  
+  zemployee_jc.lastname,
+  
+  zemployee_jc.departmentid,
+  
+  _Department.departmentname,
+  
+  @Semantics.amount.currencyCode: 'Currency'
+  zemployee_jc.salary,
+  
+  @Semantics.amount.currencyCode: 'Currency'
+  zemployee_jc.salary * 12 as AnnualSalary,
+  
+  @Semantics.currencyCode: true
+  zemployee_jc.cuky_field as Currency,
+  
+  // Expose the association
+  _Department
 }

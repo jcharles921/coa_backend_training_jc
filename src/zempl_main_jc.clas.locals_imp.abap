@@ -3,7 +3,7 @@
 *"* declarations
 CLASS lcl_data_inserter DEFINITION FINAL CREATE PUBLIC.
   PUBLIC SECTION.
-    METHODS insert_data.
+    CLASS-METHODS insert_data.
 ENDCLASS.
 
 CLASS lcl_data_inserter IMPLEMENTATION.

@@ -3,12 +3,11 @@
 *"* declarations
 CLASS lcl_helper DEFINITION FINAL CREATE PUBLIC.
   PUBLIC SECTION.
-    METHODS populate_department_table.
-    METHODS populate_employee_table.
-    METHODS get_department_data
-      RETURNING VALUE(rt_department) TYPE z_tt_department_jc.
-    METHODS get_employee_data
-      RETURNING VALUE(rt_employee) TYPE z_tt_employees_jc.
+    CLASS-METHODS:
+      populate_department_table,
+      populate_employee_table,
+      get_department_data RETURNING VALUE(rt_department) TYPE z_tt_department_jc,
+      get_employee_data   RETURNING VALUE(rt_employee) TYPE z_tt_employees_jc.
 ENDCLASS.
 
 CLASS lcl_helper IMPLEMENTATION.

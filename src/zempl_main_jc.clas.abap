@@ -15,8 +15,9 @@ CLASS zempl_main_jc IMPLEMENTATION.
     DATA: lo_employee_manager TYPE REF TO zif_empl_management_jc,
           lt_employees        TYPE ztt_employees_jc.
 
-    DATA(lo_data_inserter) = NEW lcl_data_inserter( ).
-    lo_data_inserter->insert_data( ).
+
+    lcl_data_inserter=>insert_data( ).
+
     out->write( 'Data inserted into the database.' ).
     out->write( |\r| ).
 
