@@ -1,0 +1,5 @@
+@EndUserText.label: 'App Service Defintion '
+define service ZSD_EQUIP_MAINTENACE_TASK_JC {
+  expose ZC_EQUIPMENT_JC;
+  expose ZC_MAINTENANCE_TASK_JC;
+}

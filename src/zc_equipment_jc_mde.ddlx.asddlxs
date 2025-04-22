@@ -1,0 +1,87 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'Equipment',
+    typeNamePlural: 'Equipment',
+    title: { type: #STANDARD, label: 'Equipment ID', value: 'equipment_id' }
+  },
+  presentationVariant: [{ 
+    sortOrder: [{ by: 'EquipmentName', direction: #ASC }],
+    visualizations: [{ type: #AS_LINEITEM }],
+    requestAtLeast: ['equipment_id', 'EquipmentName', 'EquipmentType', 'Location', 'LastChangedAt', 'LocalLastChanged']
+  }]
+}
+annotate view ZC_EQUIPMENT_JC with
+{
+  @UI.facet: [
+    { 
+      id: 'Equipment',
+      purpose: #STANDARD,
+      type: #IDENTIFICATION_REFERENCE,
+      label: 'Equipment Details',
+      position: 10 
+    },
+    { 
+      id: 'MaintenanceTasks',
+      purpose: #STANDARD,
+      type: #LINEITEM_REFERENCE,
+      label: 'Maintenance Tasks',
+      position: 20,
+      targetElement: '_MaintenanceTasks' 
+    }
+  ]
+  
+  @UI:{
+    lineItem: [{ position: 10, importance: #HIGH, label: 'Equipment ID' }],
+    identification: [{ position: 10, label: 'Equipment ID' }],
+    selectionField: [{ position: 10 }]
+  }
+  @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
+  equipment_id;
+
+  @UI: {
+    lineItem: [{ position: 20, importance: #HIGH }],
+    identification: [{ position: 20 }],
+    selectionField: [{ position: 20 }]
+  }
+  @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
+  EquipmentName;
+
+  @UI: {
+    lineItem: [{ position: 30, importance: #MEDIUM }],
+    identification: [{ position: 30 }],
+    selectionField: [{ position: 30 }]
+  }
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'ZVH_EQUIP_TYPE_JC', element: 'EquipmentTypeName' } }]
+  @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
+  EquipmentType;
+  
+  @UI: {
+    lineItem: [{ position: 40, importance: #MEDIUM }],
+    identification: [{ position: 40 }],
+    selectionField: [{ position: 40 }]
+  }
+  @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
+  Location;
+
+  @UI.hidden: true
+  CreatedBy;
+
+  @UI.hidden: true
+  CreatedAt;
+
+  @UI.hidden: true
+  LastChangedBy;
+
+  @UI: {
+    lineItem: [{ position: 50, importance: #LOW, label: 'Last Changed On' }],
+    identification: [{ position: 50, label: 'Last Changed On' }]
+  }
+  LastChangedAt;
+
+  @UI: {
+    lineItem: [{ position: 60, importance: #LOW, label: 'Local Last Changed On' }],
+    identification: [{ position: 60, label: 'Local Last Changed On' }]
+  }
+  LocalLastChanged;
+}

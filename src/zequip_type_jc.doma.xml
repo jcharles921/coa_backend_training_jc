@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_DOMA" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DD01V>
+    <DOMNAME>ZEQUIP_TYPE_JC</DOMNAME>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DATATYPE>CHAR</DATATYPE>
+    <LENG>000080</LENG>
+    <OUTPUTLEN>000080</OUTPUTLEN>
+    <VALEXI>X</VALEXI>
+    <DDTEXT>Equipment Type Task 6</DDTEXT>
+    <DOMMASTER>E</DOMMASTER>
+   </DD01V>
+   <DD07V_TAB>
+    <DD07V>
+     <DOMNAME>ZEQUIP_TYPE_JC</DOMNAME>
+     <VALPOS>0001</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>MECHANICAL</DOMVALUE_L>
+     <DDTEXT>Hydrolic press, and other stuffs like that</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <DOMNAME>ZEQUIP_TYPE_JC</DOMNAME>
+     <VALPOS>0002</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>ELECTONICS</DOMVALUE_L>
+     <DDTEXT>Computers, fans, printer,air conditioner</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <DOMNAME>ZEQUIP_TYPE_JC</DOMNAME>
+     <VALPOS>0003</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>OTHER</DOMVALUE_L>
+     <DDTEXT> other types of equipment</DDTEXT>
+    </DD07V>
+   </DD07V_TAB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

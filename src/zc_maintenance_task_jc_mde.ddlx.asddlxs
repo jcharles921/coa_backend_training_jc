@@ -1,0 +1,68 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'Maintenance Task',
+    typeNamePlural: 'Maintenance Tasks',
+    title: { type: #STANDARD, label: 'Task ID', value: 'TaskId' }
+  },
+  presentationVariant: [{  sortOrder: [{ by: 'DueDate', direction: #ASC }],
+    visualizations: [{ type: #AS_LINEITEM }],
+    requestAtLeast: ['TaskId', 'equipment_id', 'TaskDescription', 'Status', 'DueDate', 'LastChangedAt', 'LocalLastChanged'] }]
+}
+
+annotate view ZC_MAINTENANCE_TASK_JC with
+{
+  @UI:{ identification: [{ position: 1, label: 'Task ID' }] }
+  TaskId;
+
+  @UI: {
+    lineItem: [ { position: 40 } ],
+    identification: [ { position: 40, label: 'Equipment ID' } ]
+  }
+  equipment_id;
+
+  @UI: {
+    lineItem: [ { position: 10 } ],
+    identification: [ { position: 10, label: 'Description' } ],
+    selectionField: [ { position: 10 } ]
+  }
+    @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
+  TaskDescription;
+
+  @UI: {
+    lineItem: [{ position: 20, label: 'Task Status' }],
+    identification: [{ position: 20, label: 'Task Status' }],
+    selectionField: [{ position: 20 }]
+  }
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'ZVH_TASK_STATUS_JC', element: 'Status' } }]
+  @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
+  Status;
+
+  @UI: {
+    lineItem: [ { position: 50, label: 'Due Date' } ],
+    identification: [ { position: 50, label: 'Due Date' } ],
+    selectionField: [ { position: 50 } ]
+  }
+  DueDate;
+
+  @UI.hidden: true
+  CreatedBy;
+
+  @UI.hidden: true
+  CreatedAt;
+
+  @UI.hidden: true
+  LastChangedBy;
+
+  @UI: {
+    lineItem: [ { position: 60, label: 'Last Changed On' } ],
+    identification: [ { position: 60, label: 'Last Changed On' } ]
+  }
+  LastChangedAt;
+
+  @UI: {
+    lineItem: [ { position: 70, label: 'Local Last Changed On' } ],
+    identification: [ { position: 70, label: 'Local Last Changed On' } ]
+  }
+  LocalLastChanged;
+}
