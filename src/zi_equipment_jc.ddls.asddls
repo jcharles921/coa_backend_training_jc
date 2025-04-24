@@ -2,12 +2,7 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Equipment Data Definition'
 @Metadata.ignorePropagatedAnnotations: true
-@ObjectModel.usageType: {
-    serviceQuality: #X,
-    sizeCategory: #S,
-    dataClass: #MIXED
-}
-@ObjectModel.resultSet.sizeCategory: #XS
+
 define root view entity zi_equipment_jc
   as select from zequipment_jc as Equipment
   composition [0..*] of zi_maintenance_task_jc as _MaintenanceTasks

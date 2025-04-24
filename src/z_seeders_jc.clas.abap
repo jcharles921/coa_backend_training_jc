@@ -27,11 +27,11 @@ CLASS z_seeders_jc IMPLEMENTATION.
     lt_equipment = VALUE #(
     ( equipment_id = '001' equipment_name = 'Conveyor Belt 1' location = 'Line A' equipment_type = 'MECHANICAL'
       created_by = sy-uname created_at = lv_timestamp last_changed_by = sy-uname last_changed_at = lv_timestamp local_last_changed = lv_timestamp )
-    ( equipment_id = '002' equipment_name = 'Packing Robot' location = 'Line B' equipment_type = 'ELECTRICAL'
+    ( equipment_id = '002' equipment_name = 'Packing Robot' location = 'Line B' equipment_type = 'ELECTONICS'
       created_by = sy-uname created_at = lv_timestamp last_changed_by = sy-uname last_changed_at = lv_timestamp local_last_changed = lv_timestamp )
-    ( equipment_id = '003' equipment_name = 'Air Conditioner' location = 'Office 1' equipment_type = 'ELECTRICAL'
+    ( equipment_id = '003' equipment_name = 'Air Conditioner' location = 'Office 1' equipment_type = 'ELECTONICS'
       created_by = sy-uname created_at = lv_timestamp last_changed_by = sy-uname last_changed_at = lv_timestamp local_last_changed = lv_timestamp )
-    ( equipment_id = '004' equipment_name = 'Printer' location = 'Office 2' equipment_type = 'ELECTRICAL'
+    ( equipment_id = '004' equipment_name = 'Printer' location = 'Office 2' equipment_type = 'ELECTONICS'
       created_by = sy-uname created_at = lv_timestamp last_changed_by = sy-uname last_changed_at = lv_timestamp local_last_changed = lv_timestamp )
     ( equipment_id = '005' equipment_name = 'Generator' location = 'Basement' equipment_type = 'MECHANICAL'
       created_by = sy-uname created_at = lv_timestamp last_changed_by = sy-uname last_changed_at = lv_timestamp local_last_changed = lv_timestamp )

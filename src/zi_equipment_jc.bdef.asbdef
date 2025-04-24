@@ -1,0 +1,54 @@
+managed implementation in class zbp_i_equipment_jc unique;
+strict ( 2 );
+
+define behavior for zi_equipment_jc alias Equipment
+persistent table zequipment_jc
+lock master
+authorization master ( instance )
+etag master LocalLastChanged
+{
+  create;
+  update;
+  delete;
+
+  association _MaintenanceTasks { create; }
+
+  mapping for zequipment_jc {
+    equipment_id = equipment_id;
+    EquipmentName = equipment_name;
+    Location = location;
+    EquipmentType = equipment_type;
+    CreatedBy = created_by;
+    CreatedAt = created_at;
+    LastChangedBy = last_changed_by;
+    LastChangedAt = last_changed_at;
+    LocalLastChanged = local_last_changed;
+  }
+}
+
+define behavior for zi_maintenance_task_jc alias Maintenance
+persistent table zmaintenance_jc
+lock dependent by _Equipment
+authorization dependent by _Equipment
+etag master LocalLastChanged
+{
+  update;
+  delete;
+  field ( readonly ) TaskId;
+  field ( readonly ) equipment_id;
+
+
+  mapping for zmaintenance_jc {
+    TaskId = task_id;
+    equipment_id = equipment_id;
+    TaskDescription = task_description;
+    Status = status;
+    DueDate = due_date;
+    CreatedBy = created_by;
+    CreatedAt = created_at;
+    LastChangedBy = last_changed_by;
+    LastChangedAt = last_changed_at;
+    LocalLastChanged = local_last_changed;
+  }
+   association _Equipment;
+}

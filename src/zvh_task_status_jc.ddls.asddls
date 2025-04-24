@@ -2,11 +2,12 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'View helper for maintenace Task'
 @Metadata.ignorePropagatedAnnotations: true
-@ObjectModel.usageType:{
+@ObjectModel.usageType: {
     serviceQuality: #X,
     sizeCategory: #S,
     dataClass: #MIXED
 }
+@ObjectModel.resultSet.sizeCategory: #XS
 define view entity ZVH_TASK_STATUS_JC  as select from DDCDS_CUSTOMER_DOMAIN_VALUE( p_domain_name: 'ZTASK_STATUS_JC' )
 {
   @UI.hidden: true
