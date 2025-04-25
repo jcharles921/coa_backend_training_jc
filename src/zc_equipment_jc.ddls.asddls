@@ -4,8 +4,9 @@
 define root view entity ZC_EQUIPMENT_JC
   provider contract transactional_query
 
-  as projection on zi_equipment_jc as Equipment
+  as projection on ZI_EQUIPMENT_JC as Equipment
 {
+   
   key equipment_id,
       @Search.defaultSearchElement: true
       EquipmentName,

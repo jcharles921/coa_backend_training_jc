@@ -1,18 +1,23 @@
-projection;
+projection implementation in class zbp_c_equipment_jc unique;
 strict ( 2 );
+use draft;
 
 define behavior for ZC_EQUIPMENT_JC alias Equipment
-use etag
 {
   use create;
   use update;
   use delete;
 
+  use action Edit;
+  use action Resume;
+  use action Activate;
+  use action Discard;
+  use action Prepare;
+
   use association _MaintenanceTasks { create; }
 }
 
 define behavior for ZC_MAINTENANCE_TASK_JC alias Maintenance
-use etag
 {
   use update;
   use delete;

@@ -1,15 +1,26 @@
 managed implementation in class zbp_i_equipment_jc unique;
 strict ( 2 );
+with draft;
 
 define behavior for zi_equipment_jc alias Equipment
 persistent table zequipment_jc
-lock master
+draft table zdequipment_jc
+lock master total etag LocalLastChanged
 authorization master ( instance )
 etag master LocalLastChanged
 {
   create;
   update;
   delete;
+
+  draft action Edit;
+  draft action Resume;
+  draft action Activate optimized;
+  draft action Discard;
+  draft determine action Prepare;
+
+  field ( numbering : managed, readonly ) equipment_id;
+  field ( readonly ) CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
 
   association _MaintenanceTasks { create; }
 
@@ -28,15 +39,18 @@ etag master LocalLastChanged
 
 define behavior for zi_maintenance_task_jc alias Maintenance
 persistent table zmaintenance_jc
+draft table zdmaintenance_jc
 lock dependent by _Equipment
 authorization dependent by _Equipment
 etag master LocalLastChanged
 {
   update;
   delete;
-  field ( readonly ) TaskId;
-  field ( readonly ) equipment_id;
 
+  field ( numbering : managed, readonly ) TaskId;
+  field ( readonly ) equipment_id, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+
+  association _Equipment;
 
   mapping for zmaintenance_jc {
     TaskId = task_id;
@@ -50,5 +64,4 @@ etag master LocalLastChanged
     LastChangedAt = last_changed_at;
     LocalLastChanged = local_last_changed;
   }
-   association _Equipment;
 }

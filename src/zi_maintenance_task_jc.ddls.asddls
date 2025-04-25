@@ -8,7 +8,7 @@
     dataClass: #MIXED
 }
 
-define view entity zi_maintenance_task_jc
+define view entity ZI_MAINTENANCE_TASK_JC
   as select from zmaintenance_jc as Task
   association to parent zi_equipment_jc as _Equipment on $projection.equipment_id = _Equipment.equipment_id
 {

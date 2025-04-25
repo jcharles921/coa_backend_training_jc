@@ -3,9 +3,9 @@
 @EndUserText.label: 'Equipment Data Definition'
 @Metadata.ignorePropagatedAnnotations: true
 
-define root view entity zi_equipment_jc
+define root view entity ZI_EQUIPMENT_JC
   as select from zequipment_jc as Equipment
-  composition [0..*] of zi_maintenance_task_jc as _MaintenanceTasks
+   composition [0..*] of ZI_MAINTENANCE_TASK_JC as _MaintenanceTasks
 {
  key equipment_id ,
       equipment_name as EquipmentName,
@@ -22,5 +22,5 @@ define root view entity zi_equipment_jc
       @Semantics.systemDateTime.localInstanceLastChangedAt: true
       local_last_changed as LocalLastChanged,
       
-      _MaintenanceTasks
+     _MaintenanceTasks
 }

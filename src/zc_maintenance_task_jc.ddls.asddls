@@ -4,7 +4,7 @@
 @Search.searchable: true
 @ObjectModel.resultSet.sizeCategory: #XS
 define view entity ZC_MAINTENANCE_TASK_JC
-  as projection on zi_maintenance_task_jc as Task
+  as projection on ZI_MAINTENANCE_TASK_JC as Task
 {
   key TaskId,
       equipment_id,
@@ -17,5 +17,5 @@ define view entity ZC_MAINTENANCE_TASK_JC
       LastChangedAt,
       LocalLastChanged,
       /* Associations */
-      _Equipment : redirected to parent ZC_EQUIPMENT_JC
+     _Equipment : redirected to parent ZC_EQUIPMENT_JC
 }
