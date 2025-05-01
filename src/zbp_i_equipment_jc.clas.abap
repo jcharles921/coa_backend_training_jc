@@ -1,0 +1,5 @@
+CLASS zbp_i_equipment_jc DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_equipment_jc.
+ENDCLASS.
+
+CLASS zbp_i_equipment_jc IMPLEMENTATION.
+ENDCLASS.

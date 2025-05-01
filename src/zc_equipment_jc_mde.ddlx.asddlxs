@@ -1,0 +1,116 @@
+@Metadata.layer: #CORE
+@UI: {
+    headerInfo: {
+        typeName: 'Equipment',
+        typeNamePlural: 'Equipment',
+        title: { type: #STANDARD, label: 'Equipment', value: 'EquipmentName' },
+        description: { type: #STANDARD, value: 'EquipmentType' }  // Added description to display equipment type in header
+    },
+    presentationVariant: [{
+        sortOrder: [{ by: 'EquipmentName', direction: #ASC }],
+        visualizations: [{ type: #AS_LINEITEM }],
+        requestAtLeast: ['equipment_id', 'EquipmentName', 'EquipmentType', 'Location', 'LastChangedAt', 'LocalLastChanged']
+    }]
+}
+annotate view ZC_EQUIPMENT_JC with
+{
+    @UI.facet: [
+        {
+            id: 'Equipment',
+            purpose: #STANDARD,
+            type: #COLLECTION,  // Changed to COLLECTION to group related fields
+            label: 'Equipment Details',
+            position: 10
+        },
+        {
+            id: 'BasicData',
+            parentId: 'Equipment',
+            purpose: #STANDARD,
+            type: #FIELDGROUP_REFERENCE,
+            label: 'Basic Data',
+            position: 10, 
+            targetQualifier: 'BasicData'
+        },
+        {
+            id: 'AdministrativeData',
+            parentId: 'Equipment',
+            purpose: #STANDARD,
+            type: #FIELDGROUP_REFERENCE,
+            label: 'Administrative Data',
+            position: 20,
+            targetQualifier: 'AdminData'
+        },
+        {
+            id: 'MaintenanceTasks',
+            purpose: #STANDARD,
+            type: #LINEITEM_REFERENCE,
+            label: 'Maintenance Tasks',
+            position: 20,
+            targetElement: '_MaintenanceTasks'
+        }
+    ]
+    
+    @UI.hidden: true
+    @UI.selectionField: [ { exclude: true } ]
+    equipment_id;
+    
+    @UI: {
+        lineItem: [{ position: 10, importance: #HIGH, label: 'Equipment Name' }],
+        identification: [{ position: 10 }],
+        selectionField: [{ position: 10 }],
+        fieldGroup: [{ qualifier: 'BasicData', position: 10 }]
+    }
+    @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
+    @EndUserText.label: 'Equipment Name'
+    EquipmentName;
+    
+    @UI: {
+        lineItem: [{ position: 30, importance: #MEDIUM, label: 'Equipment Type' }],
+        identification: [{ position: 30 }],
+        selectionField: [{ position: 30 }],
+        fieldGroup: [{ qualifier: 'BasicData', position: 20 }]
+    }
+    @Consumption.valueHelpDefinition: [{ entity: { name: 'ZVH_EQUIP_TYPE_JC', element: 'EquipmentTypeName' } }]
+    @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
+    @EndUserText.label: 'Equipment Type'
+    EquipmentType;
+    
+    @UI: {
+        lineItem: [{ position: 40, importance: #MEDIUM }],
+        identification: [{ position: 40 }],
+        selectionField: [{ position: 40 }],
+        fieldGroup: [{ qualifier: 'BasicData', position: 30 }]
+    }
+    @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
+    @EndUserText.label: 'Location'
+    Location;
+    
+    @UI: {
+        fieldGroup: [{ qualifier: 'AdminData', position: 10, label: 'Created By' }]
+    }
+    CreatedBy;
+    
+    @UI: {
+        fieldGroup: [{ qualifier: 'AdminData', position: 20, label: 'Created On' }]
+    }
+    CreatedAt;
+    
+    @UI: {
+        fieldGroup: [{ qualifier: 'AdminData', position: 30, label: 'Last Changed By' }]
+    }
+    LastChangedBy;
+    
+    @UI: {
+        lineItem: [{ position: 50, importance: #LOW, label: 'Last Changed On' }],
+        identification: [{ position: 50, label: 'Last Changed On' }],
+        fieldGroup: [{ qualifier: 'AdminData', position: 40, label: 'Last Changed On' }]
+    }
+    LastChangedAt;
+    
+    @UI: {
+        lineItem: [{ position: 60, importance: #LOW, label: 'Local Last Changed On' }],
+        identification: [{ position: 60, label: 'Local Last Changed On' }],
+        fieldGroup: [{ qualifier: 'AdminData', position: 50, label: 'Local Last Changed On' }]
+    }
+    LocalLastChanged;
+}
