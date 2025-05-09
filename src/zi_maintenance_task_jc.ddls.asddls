@@ -10,12 +10,20 @@
 
 define view entity ZI_MAINTENANCE_TASK_JC
   as select from zmaintenance_jc as Task
-  association to parent zi_equipment_jc as _Equipment on $projection.equipment_id = _Equipment.equipment_id
+  association to parent ZI_EQUIPMENT_JC as _Equipment on $projection.equipment_id = _Equipment.equipment_id
 {
   key task_id            as TaskId,
       equipment_id,
       task_description   as TaskDescription,
       status             as Status,
+      @Consumption.valueHelpDefinition: [{ entity: { name: 'ZVH_TASK_STATUS_JC', element: 'Status' } }]
+      @Search: { fuzzinessThreshold: 0.7 }
+      case status
+        when 'OPEN' then 1
+        when 'IN PROGRES' then 2
+        when 'DONE' then 3
+        else 0
+      end                as StatusCriticality,
       @Semantics.calendar.month:true
       due_date           as DueDate,
       @Semantics.user.createdBy: true

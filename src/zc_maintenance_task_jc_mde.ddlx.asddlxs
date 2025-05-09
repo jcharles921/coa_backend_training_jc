@@ -5,10 +5,10 @@
     typeNamePlural: 'Maintenance Tasks',
     title: { type: #STANDARD, label: 'Task ID', value: 'TaskId' }
   },
-  presentationVariant: [{ 
+  presentationVariant: [{
     sortOrder: [{ by: 'DueDate', direction: #ASC }],
     visualizations: [{ type: #AS_LINEITEM }],
-    requestAtLeast: ['TaskId', 'equipment_id', 'TaskDescription', 'Status', 'DueDate', 'LastChangedAt', 'LocalLastChanged'] 
+    requestAtLeast: ['TaskId', 'equipment_id', 'TaskDescription', 'Status', 'DueDate', 'LastChangedAt', 'LocalLastChanged']
   }]
 }
 @Search.searchable: true
@@ -48,7 +48,7 @@ annotate view ZC_MAINTENANCE_TASK_JC with
     }
   ]
 
-  @UI:{ 
+  @UI:{
     identification: [{ position: 1, label: 'Task ID' }],
     fieldGroup: [{ qualifier: 'GeneralGroup', position: 10 }]
   }
@@ -70,15 +70,20 @@ annotate view ZC_MAINTENANCE_TASK_JC with
   @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
   TaskDescription;
 
-  @UI: {
-    lineItem: [{ position: 20, label: 'Task Status' }],
-    identification: [{ position: 20, label: 'Task Status' }],
-    selectionField: [{ position: 20 }],
-    fieldGroup: [{ qualifier: 'GeneralGroup', position: 30 }]
-  }
-  @Consumption.valueHelpDefinition: [{ entity: { name: 'ZVH_TASK_STATUS_JC', element: 'Status' } }]
-  @Search: { fuzzinessThreshold: 0.7 }
-  Status;
+      @UI: {
+        lineItem: [{ position: 20, label: 'Task Status',criticality: 'StatusCriticality'  },
+        { type: #FOR_ACTION, dataAction: 'startProgress', label: 'Start Progress' },
+        { type: #FOR_ACTION, dataAction: 'closeTask', label: 'Close Task' }
+        ],
+        identification: [{ position: 20, label: 'Task Status', criticality: 'StatusCriticality' },
+        { type: #FOR_ACTION, dataAction: 'startProgress', label: 'Start Progress',iconUrl: 'https://img.icons8.com/?size=100&id=53375&format=png&color=000000' },
+         { type: #FOR_ACTION, dataAction: 'closeTask', label: 'Close Task', iconUrl: 'https://img.icons8.com/?size=100&id=190&format=png&color=000000' }
+        ],
+        selectionField: [{ position: 20 }],
+        fieldGroup: [{ qualifier: 'GeneralGroup', position: 30 }]
+      }
+   
+      Status;
 
   @UI: {
     lineItem: [{ position: 50, label: 'Due Date' }],

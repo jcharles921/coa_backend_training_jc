@@ -2,7 +2,7 @@ managed implementation in class zbp_i_equipment_jc unique;
 strict ( 2 );
 with draft;
 
-define behavior for zi_equipment_jc alias Equipment
+define behavior for ZI_EQUIPMENT_JC alias Equipment
 persistent table zequipment_jc
 draft table zdequipment_jc
 lock master total etag LocalLastChanged
@@ -17,14 +17,32 @@ etag master LocalLastChanged
   draft action Resume;
   draft action Activate optimized;
   draft action Discard;
-  draft determine action Prepare;
+
+  draft determine action Prepare
+  {
+    validation validateEquipmentName;
+    validation validateEquipmentMandatory;
+    validation Maintenance~validateMaintenanceMandatory;
+    validation Maintenance~validateDueDate;
+  }
 
   field ( numbering : managed, readonly ) equipment_id;
-  field ( readonly ) CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+  field ( readonly ) CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LocalLastChanged;
+  field ( mandatory ) EquipmentName, EquipmentType, Location;
 
-  association _MaintenanceTasks { create; }
+  // Check for duplicate equipment names
+  validation validateEquipmentName on save { create; update; }
 
-  mapping for zequipment_jc {
+  // Validate mandatory fields
+  validation validateEquipmentMandatory on save { create; update; }
+
+  // Set default equipment type to 'IT'
+  determination setEquipmentType on modify { create; update; field EquipmentType; }
+
+  association _MaintenanceTasks { create; with draft; }
+
+  mapping for zequipment_jc
+  {
     equipment_id = equipment_id;
     EquipmentName = equipment_name;
     Location = location;
@@ -37,7 +55,7 @@ etag master LocalLastChanged
   }
 }
 
-define behavior for zi_maintenance_task_jc alias Maintenance
+define behavior for ZI_MAINTENANCE_TASK_JC alias Maintenance
 persistent table zmaintenance_jc
 draft table zdmaintenance_jc
 lock dependent by _Equipment
@@ -48,11 +66,29 @@ etag master LocalLastChanged
   delete;
 
   field ( numbering : managed, readonly ) TaskId;
-  field ( readonly ) equipment_id, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+  field ( readonly ) equipment_id, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LocalLastChanged;
+  field ( mandatory ) DueDate, TaskDescription;
 
-  association _Equipment;
+  // Validate all required fields are entered
+  validation validateMaintenanceMandatory on save { create; update; }
 
-  mapping for zmaintenance_jc {
+  // Validate due date is at least 7 days in the future
+  validation validateDueDate on save { create; update; }
+
+  // Set default due date to 7 days in the future
+  determination setDefaultDueDate on modify { create; update; field DueDate; }
+
+  // Set default status to OPEN
+  determination setDefaultStatus on save { create; update; field Status; }
+
+  // Define actions with instance features
+  action ( features : instance ) startProgress result [1] $self;
+  action ( features : instance ) closeTask result [1] $self;
+
+  association _Equipment { with draft; }
+
+  mapping for zmaintenance_jc
+  {
     TaskId = task_id;
     equipment_id = equipment_id;
     TaskDescription = task_description;
