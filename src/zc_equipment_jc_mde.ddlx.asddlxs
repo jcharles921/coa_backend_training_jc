@@ -12,13 +12,14 @@
         requestAtLeast: ['equipment_id', 'EquipmentName', 'EquipmentType', 'Location', 'LastChangedAt', 'LocalLastChanged']
     }]
 }
+@Search.searchable: true
 annotate view ZC_EQUIPMENT_JC with
 {
     @UI.facet: [
         {
             id: 'Equipment',
             purpose: #STANDARD,
-            type: #COLLECTION,  // Changed to COLLECTION to group related fields
+            type: #COLLECTION,  
             label: 'Equipment Details',
             position: 10
         },

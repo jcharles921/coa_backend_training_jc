@@ -10,6 +10,7 @@ define view entity ZC_MAINTENANCE_TASK_JC
       equipment_id,
       TaskDescription,
       Status,
+      StatusCriticality,
       DueDate,
       CreatedBy,
       CreatedAt,

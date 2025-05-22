@@ -1,4 +1,4 @@
-projection implementation in class zbp_c_equipment_jc unique;
+projection implementation in class zbp_i_equipment_jc unique;
 strict ( 2 );
 use draft;
 
@@ -14,7 +14,7 @@ define behavior for ZC_EQUIPMENT_JC alias Equipment
   use action Discard;
   use action Prepare;
 
-  use association _MaintenanceTasks { create; }
+  use association _MaintenanceTasks { create; with draft; }
 }
 
 define behavior for ZC_MAINTENANCE_TASK_JC alias Maintenance
@@ -22,5 +22,10 @@ define behavior for ZC_MAINTENANCE_TASK_JC alias Maintenance
   use update;
   use delete;
 
-  use association _Equipment;
+  field ( readonly ) Status;
+
+  use action startProgress;
+  use action closeTask;
+
+  use association _Equipment { with draft; }
 }
